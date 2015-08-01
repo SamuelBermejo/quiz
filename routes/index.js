@@ -12,10 +12,6 @@ router.get('/author', function(req,res){
 	res.render('author', { title: 'Autor', errors: []});
 });
 
-router.get('/search', function(req,res){
-	res.render('search', { title: 'Búsqueda', errors: []});
-});
-
 // Autoload de comandos con :quizId
 router.param('quizId', quizController.load); // autoload :quizId
 
