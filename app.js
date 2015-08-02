@@ -30,6 +30,23 @@ app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Autologout
+app.use(function(req, res, next){
+    if(req.session.user) { //si estamos en una sesion
+        if(!req.session.contador){
+            req.session.contador = (new Date()).getTime();
+        } else {
+            if((new Date()).getTime() - req.session.contador > 10000) {
+                delete req.session.user;
+                delete req.session.contador;
+            } else {
+                req.session.contador = (new Date()).getTime();
+            }
+        }
+    }
+    next();
+});
+
 // Helpers dinamicos:
 app.use(function(req,res,next) {
 
@@ -77,6 +94,5 @@ app.use(function(err, req, res, next) {
         errors: []
     });
 });
-
 
 module.exports = app;
